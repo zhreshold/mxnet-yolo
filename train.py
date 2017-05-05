@@ -24,11 +24,11 @@ def parse_args():
     parser.add_argument('--finetune', dest='finetune', type=int, default=-1,
                         help='finetune from epoch n, rename the model before doing this')
     parser.add_argument('--pretrained', dest='pretrained', help='pretrained model prefix',
-                        default=os.path.join(os.getcwd(), 'model', 'vgg16_reduced'), type=str)
+                        default=os.path.join(os.getcwd(), 'model', 'darknet19'), type=str)
     parser.add_argument('--epoch', dest='epoch', help='epoch of pretrained model',
                         default=1, type=int)
     parser.add_argument('--prefix', dest='prefix', help='new model prefix',
-                        default=os.path.join(os.getcwd(), 'model', 'ssd'), type=str)
+                        default=os.path.join(os.getcwd(), 'model', 'yolo2'), type=str)
     parser.add_argument('--gpus', dest='gpus', help='GPU devices to train with',
                         default='0', type=str)
     parser.add_argument('--begin-epoch', dest='begin_epoch', help='begin epoch of training',

@@ -22,13 +22,16 @@ def get_symbol(num_classes=20, **kwargs):
         act_type='leaky')
 
     # re-organze conv5_5 and concat conv7_2
-    concat = conv7_2
+    conv5_6 = mx.sym.Convolution(data=conv5_5, kernel=(2, 2), num_filter=1024,
+        name='conv5_6', stride=(2, 2))
+    concat = mx.sym.Concat(*[conv5_6, conv7_2], dim=1)
     conv8_1 = conv_act_layer(concat, 'conv8_1', 1024, kernel=(3, 3), pad=(1, 1),
         act_type='leaky')
     pred = mx.symbol.Convolution(data=conv8_1, name='conv_pred', kernel=(1, 1),
         num_filter=num_anchor * (num_classes + 4 + 1))
 
     out = mx.contrib.symbol.YoloOutput(data=pred, num_class=num_classes,
-        num_anchor=num_anchor, object_grad_scale=5.0, anchors=anchors,
+        num_anchor=num_anchor, object_grad_scale=5.0, background_grad_scale=1.0,
+        coord_grad_scale=1.0, class_grad_scale=1.0, anchors=anchors,
         name='yolo_output')
     return out

@@ -40,7 +40,7 @@ def conv_act_layer(from_layer, name, num_filter, kernel=(3, 3), pad=(1, 1), \
         conv = mx.symbol.BatchNorm(data=conv, name="bn_{}".format(name))
     if act_type in ['elu', 'leaky', 'prelu', 'rrelu']:
         relu = mx.symbol.LeakyReLU(data=conv, act_type=act_type,
-        name="{}_{}".format(act_type, name))
+        name="{}_{}".format(act_type, name), slope=0.1)
     elif act_type in ['relu', 'sigmoid', 'softrelu', 'tanh']:
         relu = mx.symbol.Activation(data=conv, act_type=act_type, \
         name="{}_{}".format(act_type, name))
