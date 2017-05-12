@@ -7,7 +7,7 @@ import mxnet as mx
 from symbol_darknet19 import get_symbol as get_darknet19
 from symbol_darknet19 import conv_act_layer
 
-def get_symbol(num_classes=20, **kwargs):
+def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     bone = get_darknet19(num_classes=num_classes, **kwargs)
     conv5_5 = bone.get_internals()["conv5_5_output"]
     conv6_5 = bone.get_internals()["conv6_5_output"]
@@ -22,9 +22,9 @@ def get_symbol(num_classes=20, **kwargs):
         act_type='leaky')
 
     # re-organze conv5_5 and concat conv7_2
-    conv5_6 = mx.sym.Convolution(data=conv5_5, kernel=(2, 2), num_filter=1024,
-        name='conv5_6', stride=(2, 2))
-    concat = mx.sym.Concat(*[conv5_6, conv7_2], dim=1)
+    conv5_6 = mx.sym.stack_neighbor(data=conv5_5, kernel=(2, 2), name='stack_downsample')
+    # concat = mx.sym.Concat(*[conv5_6, conv7_2], dim=1)
+    concat = conv7_2
     conv8_1 = conv_act_layer(concat, 'conv8_1', 1024, kernel=(3, 3), pad=(1, 1),
         act_type='leaky')
     pred = mx.symbol.Convolution(data=conv8_1, name='conv_pred', kernel=(1, 1),
@@ -33,5 +33,5 @@ def get_symbol(num_classes=20, **kwargs):
     out = mx.contrib.symbol.YoloOutput(data=pred, num_class=num_classes,
         num_anchor=num_anchor, object_grad_scale=5.0, background_grad_scale=1.0,
         coord_grad_scale=1.0, class_grad_scale=1.0, anchors=anchors,
-        name='yolo_output')
+        nms_topk=400, warmup_samples=12800, name='yolo_output')
     return out

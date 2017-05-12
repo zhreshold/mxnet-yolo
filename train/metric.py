@@ -5,7 +5,7 @@ import numpy as np
 class MultiBoxMetric(mx.metric.EvalMetric):
     """Calculate metrics for Multibox training """
     def __init__(self, thresh=0.5, eps=1e-8):
-        super(MultiBoxMetric, self).__init__(['Recall', 'IOU', 'BG'], 3)
+        super(MultiBoxMetric, self).__init__(['Acc', 'IOU', 'BG'], 3)
         self.eps = eps
         self.thresh = thresh
 
@@ -13,7 +13,10 @@ class MultiBoxMetric(mx.metric.EvalMetric):
         """
         Implementation of updating metrics
         """
-        # temp = preds[1].asnumpy()
+        # temp = preds[0].asnumpy()
+        # print np.sum(temp[0, :, 0] > -1);
+        # print temp[0, :, :]
+        # raise RuntimeError
         # print np.reshape(temp, (-1, 32))[:3, :]
         # num_batch = preds[1].shape[0]
         # metric = mx.nd.slice_axis(preds[1].reshape((-1, num_batch)),
@@ -70,26 +73,30 @@ class MultiBoxMetric(mx.metric.EvalMetric):
         # draw(out[0, :, 2:])
         label = labels[0].asnumpy()
         for i in range(out.shape[0]):
+            valid_out_mask = np.where(out[i, :, 0] >= 0)[0]
+            valid_out = out[i, valid_out_mask, :]
             valid_mask = np.where(label[i, :, 0] >= 0)[0]
             valid_label = label[i, valid_mask, 1:5]
-            ious = calc_ious(out[i, :, 2:6], valid_label)
-            max_iou = np.amax(ious, axis=0)
-            self.sum_metric[0] += np.sum(max_iou > self.thresh)
-            self.num_inst[0] += max_iou.size
-            self.sum_metric[1] += np.sum(max_iou)
-            self.num_inst[1] += max_iou.size
-            # for j in range(valid_mask.size):
-            #     gt_id = label[i, valid_mask[j], 0]
-            #     correct = np.intersect1d(np.where(ious[:, j] > self.thresh)[0],
-            #         np.where(out[i, :, 0] == gt_id)[0])
-            #     if correct.size > 0:
-            #         self.sum_metric[0] += 1.
-            #         max_iou = np.amax(ious[correct, j])
-            #         self.sum_metric[1] += max_iou
-            #         self.num_inst[1] += 1
-            #     self.num_inst[0] += 1
+            ious = calc_ious(valid_out[:, 2:6], valid_label)
+            # max_iou = np.amax(ious, axis=0)
+            # self.sum_metric[0] += np.sum(max_iou > self.thresh)
+            # self.num_inst[0] += max_iou.size
+            # self.sum_metric[1] += np.sum(max_iou)
+            # self.num_inst[1] += max_iou.size
+            for j in range(valid_mask.size):
+                gt_id = label[i, valid_mask[j], 0]
+                # correct = np.intersect1d(np.where(ious[:, j] > self.thresh)[0],
+                #     np.where(out[i, :, 0] == gt_id)[0])
+                best_idx = np.argmax(ious[:, j])
+                correct = valid_out[best_idx, 0] == gt_id
+                if correct:
+                    self.sum_metric[0] += 1.
+                max_iou = np.amax(ious[:, j])
+                self.sum_metric[1] += max_iou
+                self.num_inst[1] += 1
+                self.num_inst[0] += 1
             bg_mask = np.where(np.amax(ious, axis=1) < self.eps)[0]
-            self.sum_metric[2] += np.sum(out[i, bg_mask, 1])
+            self.sum_metric[2] += np.sum(valid_out[bg_mask, 1])
             self.num_inst[2] += bg_mask.size
 
     def get(self):

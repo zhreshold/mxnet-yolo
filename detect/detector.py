@@ -34,7 +34,7 @@ class Detector(object):
         load_symbol, args, auxs = mx.model.load_checkpoint(model_prefix, epoch)
         if symbol is None:
             symbol = load_symbol
-        self.mod = mx.mod.Module(symbol, label_names=None, context=ctx)
+        self.mod = mx.mod.Module(symbol, label_names=("yolo_output_label",), context=ctx)
         self.data_shape = data_shape
         self.mod.bind(data_shapes=[('data', (batch_size, 3, data_shape, data_shape))])
         self.mod.set_params(args, auxs)
@@ -180,7 +180,6 @@ class Detector(object):
 
         """
         import cv2
-        im_list *= 2000
         dets = self.im_detect(im_list, root_dir, extension, show_timer=show_timer)
         if not isinstance(im_list, list):
             im_list = [im_list]
