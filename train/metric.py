@@ -5,7 +5,7 @@ import numpy as np
 class MultiBoxMetric(mx.metric.EvalMetric):
     """Calculate metrics for Multibox training """
     def __init__(self, thresh=0.5, eps=1e-8):
-        super(MultiBoxMetric, self).__init__(['Acc', 'IOU', 'BG'], 3)
+        super(MultiBoxMetric, self).__init__(['Acc', 'IOU', 'BG-score', 'Obj-score'], 4)
         self.eps = eps
         self.thresh = thresh
 
@@ -98,6 +98,9 @@ class MultiBoxMetric(mx.metric.EvalMetric):
             bg_mask = np.where(np.amax(ious, axis=1) < self.eps)[0]
             self.sum_metric[2] += np.sum(valid_out[bg_mask, 1])
             self.num_inst[2] += bg_mask.size
+            obj_mask = np.where(np.amax(ious, axis=1) > self.thresh)[0]
+            self.sum_metric[3] += np.sum(valid_out[obj_mask, 1])
+            self.num_inst[3] += obj_mask.size
 
     def get(self):
         """Get the current evaluation result.

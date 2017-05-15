@@ -23,8 +23,8 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
 
     # re-organze conv5_5 and concat conv7_2
     conv5_6 = mx.sym.stack_neighbor(data=conv5_5, kernel=(2, 2), name='stack_downsample')
-    # concat = mx.sym.Concat(*[conv5_6, conv7_2], dim=1)
-    concat = conv7_2
+    concat = mx.sym.Concat(*[conv5_6, conv7_2], dim=1)
+    # concat = conv7_2
     conv8_1 = conv_act_layer(concat, 'conv8_1', 1024, kernel=(3, 3), pad=(1, 1),
         act_type='leaky')
     pred = mx.symbol.Convolution(data=conv8_1, name='conv_pred', kernel=(1, 1),
