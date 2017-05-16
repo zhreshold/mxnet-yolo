@@ -182,7 +182,7 @@ class DetIter(mx.io.DataIter):
         if self.is_train:
             return [(k, v.shape) for k, v in self._label.items()]
         else:
-            return []
+            return [(k, v.shape) for k, v in self._label.items()]
 
     def reset(self):
         self._current = 0
@@ -237,9 +237,9 @@ class DetIter(mx.io.DataIter):
                 batch_label.append(label)
         self._data = {'data': batch_data}
         if self.is_train:
-            self._label = {'label': mx.nd.array(np.array(batch_label))}
+            self._label = {'yolo_output_label': mx.nd.array(np.array(batch_label))}
         else:
-            self._label = {'label': None}
+            self._label = {'yolo_output_label': mx.nd.zeros((1, 2, 5))}  # fake label
 
     def _data_augmentation(self, data, label):
         """

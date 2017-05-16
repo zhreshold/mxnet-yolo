@@ -36,7 +36,8 @@ class Detector(object):
             symbol = load_symbol
         self.mod = mx.mod.Module(symbol, label_names=("yolo_output_label",), context=ctx)
         self.data_shape = data_shape
-        self.mod.bind(data_shapes=[('data', (batch_size, 3, data_shape, data_shape))])
+        self.mod.bind(data_shapes=[('data', (batch_size, 3, data_shape, data_shape))],
+            label_shapes=[('yolo_output_label', (1, 2, 5))])
         self.mod.set_params(args, auxs)
         self.data_shape = data_shape
         self.mean_pixels = mean_pixels
@@ -62,31 +63,31 @@ class Detector(object):
         # import time
         # time.sleep(5) # delays for 5 seconds
         # print("Stop sleep")
-        # start = timer()
-        # detections = self.mod.predict(det_iter).asnumpy()
-        # time_elapsed = timer() - start
-        # if show_timer:
-        #     print("Detection time for {} images: {:.4f} sec".format(
-        #         num_images, time_elapsed))
-        # result = []
-        # for i in range(detections.shape[0]):
-        #     det = detections[i, :, :]
-        #     res = det[np.where(det[:, 0] >= 0)[0]]
-        #     result.append(res)
-        tmp_result = []
-        result = []
         start = timer()
-        for det in self.mod.iter_predict(det_iter):
-            det = det[0][0][0].as_in_context(mx.cpu())
-            tmp_result.append(det)
+        detections = self.mod.predict(det_iter).asnumpy()
         time_elapsed = timer() - start
         if show_timer:
             print("Detection time for {} images: {:.4f} sec".format(
                 num_images, time_elapsed))
-        for det in tmp_result:
-            det = det.asnumpy()
+        result = []
+        for i in range(detections.shape[0]):
+            det = detections[i, :, :]
             res = det[np.where(det[:, 0] >= 0)[0]]
             result.append(res)
+        # tmp_result = []
+        # result = []
+        # start = timer()
+        # for det in self.mod.iter_predict(det_iter):
+        #     det = det[0][0][0].as_in_context(mx.cpu())
+        #     tmp_result.append(det)
+        # time_elapsed = timer() - start
+        # if show_timer:
+        #     print("Detection time for {} images: {:.4f} sec".format(
+        #         num_images, time_elapsed))
+        # for det in tmp_result:
+        #     det = det.asnumpy()
+        #     res = det[np.where(det[:, 0] >= 0)[0]]
+        #     result.append(res)
         return result
 
     def im_detect(self, im_list, root_dir=None, extension=None, show_timer=False):
