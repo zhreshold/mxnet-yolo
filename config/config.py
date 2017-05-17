@@ -45,7 +45,7 @@ cfg.train.rand_crop_samplers = [
 cfg.train.crop_emit_mode = 'center'
 # cfg.train.emit_overlap_thresh = 0.4
 # random padding
-cfg.train.rand_pad = RandPadder(rand_pad_prob=0, max_pad_scale=4.0)
+cfg.train.rand_pad = RandPadder(rand_pad_prob=0.5, max_pad_scale=2.0)
 # random color jitter
 cfg.train.color_jitter = ColorJitter(random_hue_prob=0.5, random_saturation_prob=0.5,
     random_illumination_prob=0.5, random_contrast_prob=0.5)
