@@ -47,11 +47,11 @@ def parse_args():
                         help='momentum')
     parser.add_argument('--wd', dest='weight_decay', type=float, default=0.0005,
                         help='weight decay')
-    parser.add_argument('--mean-r', dest='mean_r', type=float, default=123,
+    parser.add_argument('--mean-r', dest='mean_r', type=float, default=123.68,
                         help='red mean value')
-    parser.add_argument('--mean-g', dest='mean_g', type=float, default=117,
+    parser.add_argument('--mean-g', dest='mean_g', type=float, default=116.779,
                         help='green mean value')
-    parser.add_argument('--mean-b', dest='mean_b', type=float, default=104,
+    parser.add_argument('--mean-b', dest='mean_b', type=float, default=103.939,
                         help='blue mean value')
     parser.add_argument('--lr-steps', dest='lr_refactor_step', type=str, default='150, 200',
                         help='refactor learning rate at specified epochs')
@@ -132,4 +132,5 @@ if __name__ == '__main__':
               force_nms=args.force_nms,
               ovp_thresh=args.overlap_thresh,
               use_difficult=args.use_difficult,
-              voc07_metric=args.use_voc07_metric)
+              voc07_metric=args.use_voc07_metric,
+              random_shape_step=32)
