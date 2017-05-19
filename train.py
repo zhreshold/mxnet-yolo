@@ -39,6 +39,12 @@ def parse_args():
                         default=20, type=int)
     parser.add_argument('--data-shape', dest='data_shape', type=int, default=416,
                         help='set image shape')
+    parser.add_argument('--random-shape-step', dest='random_shape_step', type=int,
+                        default=32, help='random data shape step')
+    parser.add_argument('--min-random-shape', dest='min_random_shape', type=int,
+                        default=320, help='minimum random data shape')
+    parser.add_argument('--max-random-shape', dest='max_random_shape', type=int,
+                        default=512, help='maximum random data shape')
     parser.add_argument('--label-width', dest='label_width', type=int, default=350,
                         help='force padding label width to sync across train and validation')
     parser.add_argument('--lr', dest='learning_rate', type=float, default=0.004,
@@ -133,4 +139,5 @@ if __name__ == '__main__':
               ovp_thresh=args.overlap_thresh,
               use_difficult=args.use_difficult,
               voc07_metric=args.use_voc07_metric,
-              random_shape_step=32)
+              random_shape_step=args.random_shape_step,
+              shape_range=(args.min_random_shape, args.max_random_shape))
