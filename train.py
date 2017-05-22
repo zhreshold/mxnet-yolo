@@ -41,6 +41,8 @@ def parse_args():
                         help='set image shape')
     parser.add_argument('--random-shape-step', dest='random_shape_step', type=int,
                         default=32, help='random data shape step')
+    parser.add_argument('--random-shape-epoch', dest='random_shape_epoch', type=int,
+                        default=10, help='random shape epoch')
     parser.add_argument('--min-random-shape', dest='min_random_shape', type=int,
                         default=320, help='minimum random data shape')
     parser.add_argument('--max-random-shape', dest='max_random_shape', type=int,
@@ -140,4 +142,5 @@ if __name__ == '__main__':
               use_difficult=args.use_difficult,
               voc07_metric=args.use_voc07_metric,
               random_shape_step=args.random_shape_step,
-              shape_range=(args.min_random_shape, args.max_random_shape))
+              shape_range=(args.min_random_shape, args.max_random_shape),
+              random_shape_epoch=args.random_shape_epoch)
