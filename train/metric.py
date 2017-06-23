@@ -5,9 +5,21 @@ import numpy as np
 class MultiBoxMetric(mx.metric.EvalMetric):
     """Calculate metrics for Multibox training """
     def __init__(self, thresh=0.5, eps=1e-8):
-        super(MultiBoxMetric, self).__init__(['Acc', 'IOU', 'BG-score', 'Obj-score'], 4)
+        super(MultiBoxMetric, self).__init__('MultiBox')
         self.eps = eps
         self.thresh = thresh
+	self.num = 4
+	self.name = ['Acc', 'IOU', 'BG-score', 'Obj-score']
+	self.reset()
+
+    def reset(self):
+	"""Override reset behavior"""
+	if getattr(self, 'num', None) is None:
+	    self.num_inst = 0
+	    self.sum_metric = 0.0
+	else:
+	    self.num_inst = [0] * self.num
+	    self.sum_metric = [0.0] * self.num 
 
     def update(self, labels, preds):
         """
