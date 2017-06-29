@@ -7,7 +7,6 @@ import sys
 
 parser = argparse.ArgumentParser(description='network visualization')
 parser.add_argument('--network', type=str, default='darknet19_yolo',
-                    choices = ['darknet19_yolo'],
                     help = 'the cnn to use')
 parser.add_argument('--num-classes', type=int, default=20,
                     help='the number of classes')
