@@ -38,9 +38,8 @@ class BurnInMultiFactorScheduler(LRScheduler):
         self.burn_in_power = burn_in_power
 
     def __call__(self, num_update):
-        if self.cur_step_ind < self.burn_in:
-            lr = self.base_lr * pow(self.cur_step_ind / float(self.burn_in), self.burn_in_power)
-            logging.debug("Update[Burn-in]: Change learning rate to %0.5e", lr)
+        if num_update < self.burn_in:
+            lr = self.base_lr * pow(max(1, num_update) / float(self.burn_in), self.burn_in_power)
             return lr
         # NOTE: use while rather than if  (for continuing training via load_epoch)
         while self.cur_step_ind <= len(self.step)-1:
