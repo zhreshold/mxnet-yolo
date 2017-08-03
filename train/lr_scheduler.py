@@ -20,7 +20,7 @@ class BurnInMultiFactorScheduler(LRScheduler):
         The factor to change the learning rate.
     """
     def __init__(self, burn_in, step, factor=1, burn_in_power=4):
-        super(MultiFactorScheduler, self).__init__()
+        super(BurnInMultiFactorScheduler, self).__init__()
         assert isinstance(step, list) and len(step) >= 1
         for i, _step in enumerate(step):
             if i != 0 and step[i] <= step[i-1]:
