@@ -4,6 +4,7 @@ data/*
 model/*
 !model/README.md
 cache/*
+.DS_Store
 
 # Compiled Object files
 *.slo
