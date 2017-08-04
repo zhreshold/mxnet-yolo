@@ -44,7 +44,7 @@ def parse_args():
     parser.add_argument('--random-shape-epoch', dest='random_shape_epoch', type=int,
                         default=10, help='random shape epoch')
     parser.add_argument('--min-random-shape', dest='min_random_shape', type=int,
-                        default=320, help='minimum random data shape')
+                        default=352, help='minimum random data shape')
     parser.add_argument('--max-random-shape', dest='max_random_shape', type=int,
                         default=512, help='maximum random data shape')
     parser.add_argument('--label-width', dest='label_width', type=int, default=350,
