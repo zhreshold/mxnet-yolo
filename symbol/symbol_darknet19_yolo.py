@@ -12,7 +12,12 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     conv5_5 = bone.get_internals()["conv5_5_output"]
     conv6_5 = bone.get_internals()["conv6_5_output"]
     # anchors
-    anchors = [1.3221, 1.73145, 3.19275, 4.00944, 5.05587, 8.09892, 9.47112, 4.84053, 11.2364, 10.0071]
+    anchors = [0.4, 0.4, 
+               1.3221, 1.73145,
+               3.19275, 4.00944,
+               5.05587, 8.09892,
+               9.47112, 4.84053,
+               11.2364, 10.0071]
     num_anchor = len(anchors) // 2
 
     # extra layers
