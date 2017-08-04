@@ -8,6 +8,10 @@ This is a pre-released version.
 This is a re-implementation of original yolo v2 which is based on [darknet](https://github.com/pjreddie/darknet).
 The arXiv paper is available [here](https://arxiv.org/pdf/1612.08242.pdf).
 
+### Demo
+
+![demo1](https://user-images.githubusercontent.com/3307514/28980832-29bb0262-7904-11e7-83e3-a5fec65e0c70.png)
+
 ### Getting started
 - Build from source, this is required because this example is not merged, some
 custom operators are not presented in official MXNet. [Instructions](http://mxnet.io/get_started/install.html)
