@@ -36,9 +36,10 @@ def get_detector(net, prefix, epoch, data_shape, mean_pixels, ctx,
     """
     sys.path.append(os.path.join(os.getcwd(), 'symbol'))
     if net is not None:
+        prefix = prefix + "_" + net.strip('_yolo') + '_' + str(data_shape)
         net = importlib.import_module("symbol_" + net) \
             .get_symbol(len(CLASSES), nms_thresh, force_nms)
-    detector = Detector(net, prefix + "_" + str(data_shape), epoch, \
+    detector = Detector(net, prefix, epoch, \
         data_shape, mean_pixels, ctx=ctx)
     return detector
 
