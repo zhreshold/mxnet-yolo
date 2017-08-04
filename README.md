@@ -14,7 +14,7 @@ custom operators are not presented in official MXNet. [Instructions](http://mxne
 - Install required packages: `cv2`, `matplotlib`
 
 ### Try the demo
-- Download the pretrained [model], and extract to `model/` directory.
+- Download the pretrained [model](https://github.com/zhreshold/mxnet-yolo/releases/download/0.1-alpha/yolo2_darknet19_416_pascalvoc0712_trainval.zip), and extract to `model/` directory.
 - Run
 ```
 # cd /paht/to/mxnet-yolo
@@ -24,7 +24,7 @@ python demo.py -h
 ```
 
 ### Train the model
-- Grab a pretrained model, e.g. `darknet19`
+- Grab a pretrained model, e.g. [`darknet19`](https://github.com/zhreshold/mxnet-yolo/releases/download/0.1-alpha/darknet19_416_ILSVRC2012.zip)
 - Download PASCAL VOC dataset.
 ```
 cd /path/to/where_you_store_datasets/
