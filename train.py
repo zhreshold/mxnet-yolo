@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument('--val-list', dest='val_list', help='validation list to use',
                         default="", type=str)
     parser.add_argument('--network', dest='network', type=str, default='darknet19_yolo',
-                        choices=['darknet19_yolo'], help='which network to use')
+                        help='which network to use')
     parser.add_argument('--batch-size', dest='batch_size', type=int, default=64,
                         help='training batch size')
     parser.add_argument('--resume', dest='resume', type=int, default=-1,
