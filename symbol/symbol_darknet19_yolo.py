@@ -9,7 +9,7 @@ from symbol_darknet19 import conv_act_layer
 
 def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     bone = get_darknet19(num_classes=num_classes, **kwargs)
-    conv5_5 = bone.get_internals()["conv5_5_output"]
+    conv5_1 = bone.get_internals()["conv5_1_output"]
     conv6_5 = bone.get_internals()["conv6_5_output"]
     # anchors
     anchors = [
@@ -21,14 +21,16 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     num_anchor = len(anchors) // 2
 
     # extra layers
+    conv5_6 = conv_act_layer(conv5_1, 'conv5_6', 1024, kernel=(3, 3), pad=(1, 1),
+        act_type='leaky')
     conv7_1 = conv_act_layer(conv6_5, 'conv7_1', 1024, kernel=(3, 3), pad=(1, 1),
         act_type='leaky')
     conv7_2 = conv_act_layer(conv7_1, 'conv7_2', 1024, kernel=(3, 3), pad=(1, 1),
         act_type='leaky')
 
-    # re-organze conv5_5 and concat conv7_2
-    conv5_6 = mx.sym.stack_neighbor(data=conv5_5, kernel=(2, 2), name='stack_downsample')
-    concat = mx.sym.Concat(*[conv5_6, conv7_2], dim=1)
+    # re-organze conv5_6 and concat conv7_2
+    conv5_7 = mx.sym.stack_neighbor(data=conv5_6, kernel=(2, 2), name='stack_downsample')
+    concat = mx.sym.Concat(*[conv5_7, conv7_2], dim=1)
     # concat = conv7_2
     conv8_1 = conv_act_layer(concat, 'conv8_1', 1024, kernel=(3, 3), pad=(1, 1),
         act_type='leaky')
