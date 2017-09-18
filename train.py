@@ -49,7 +49,7 @@ def parse_args():
                         default=512, help='maximum random data shape')
     parser.add_argument('--label-width', dest='label_width', type=int, default=350,
                         help='force padding label width to sync across train and validation')
-    parser.add_argument('--lr', dest='learning_rate', type=float, default=0.0001,
+    parser.add_argument('--lr', dest='learning_rate', type=float, default=0.001,
                         help='learning rate')
     parser.add_argument('--momentum', dest='momentum', type=float, default=0.9,
                         help='momentum')
@@ -61,9 +61,9 @@ def parse_args():
                         help='green mean value')
     parser.add_argument('--mean-b', dest='mean_b', type=float, default=103.939,
                         help='blue mean value')
-    parser.add_argument('--lr-steps', dest='lr_refactor_step', type=str, default='150, 200',
+    parser.add_argument('--lr-steps', dest='lr_refactor_step', type=str, default='90, 180',
                         help='refactor learning rate at specified epochs')
-    parser.add_argument('--lr-factor', dest='lr_refactor_ratio', type=str, default=1,
+    parser.add_argument('--lr-factor', dest='lr_refactor_ratio', type=str, default=.1,
                         help='ratio to refactor learning rate')
     parser.add_argument('--freeze', dest='freeze_pattern', type=str, default="^(conv1_|conv2_).*",
                         help='freeze layer pattern')

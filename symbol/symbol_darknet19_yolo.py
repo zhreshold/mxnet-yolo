@@ -9,8 +9,8 @@ from symbol_darknet19 import conv_act_layer
 
 def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     bone = get_darknet19(num_classes=num_classes, **kwargs)
-    conv5_1 = bone.get_internals()["conv5_1_output"]
-    conv6_5 = bone.get_internals()["conv6_5_output"]
+    conv5_5 = bone.get_internals()["leaky_conv5_5_output"]
+    conv6_5 = bone.get_internals()["leaky_conv6_5_output"]
     # anchors
     anchors = [
                1.3221, 1.73145,
@@ -21,7 +21,7 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     num_anchor = len(anchors) // 2
 
     # extra layers
-    conv5_6 = conv_act_layer(conv5_1, 'conv5_6', 1024, kernel=(3, 3), pad=(1, 1),
+    conv5_6 = conv_act_layer(conv5_5, 'conv5_6', 1024, kernel=(3, 3), pad=(1, 1),
         act_type='leaky')
     conv7_1 = conv_act_layer(conv6_5, 'conv7_1', 1024, kernel=(3, 3), pad=(1, 1),
         act_type='leaky')
