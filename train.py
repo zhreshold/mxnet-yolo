@@ -44,9 +44,9 @@ def parse_args():
     parser.add_argument('--random-shape-epoch', dest='random_shape_epoch', type=int,
                         default=10, help='random shape epoch')
     parser.add_argument('--min-random-shape', dest='min_random_shape', type=int,
-                        default=352, help='minimum random data shape')
+                        default=320, help='minimum random data shape')
     parser.add_argument('--max-random-shape', dest='max_random_shape', type=int,
-                        default=512, help='maximum random data shape')
+                        default=608, help='maximum random data shape')
     parser.add_argument('--label-width', dest='label_width', type=int, default=350,
                         help='force padding label width to sync across train and validation')
     parser.add_argument('--lr', dest='learning_rate', type=float, default=0.001,
@@ -65,7 +65,7 @@ def parse_args():
                         help='refactor learning rate at specified epochs')
     parser.add_argument('--lr-factor', dest='lr_refactor_ratio', type=str, default=.1,
                         help='ratio to refactor learning rate')
-    parser.add_argument('--freeze', dest='freeze_pattern', type=str, default="^(conv1_|conv2_).*",
+    parser.add_argument('--freeze', dest='freeze_pattern', type=str, default="",
                         help='freeze layer pattern')
     parser.add_argument('--log', dest='log_file', type=str, default="train.log",
                         help='save training log to file')
