@@ -37,7 +37,7 @@ class Detector(object):
         self.mod = mx.mod.Module(symbol, label_names=("yolo_output_label",), context=ctx)
         self.data_shape = data_shape
         self.mod.bind(data_shapes=[('data', (batch_size, 3, data_shape, data_shape))],
-            label_shapes=[('yolo_output_label', (1, 2, 5))])
+            label_shapes=[('yolo_output_label', (batch_size, 2, 5))])
         self.mod.set_params(args, auxs)
         self.data_shape = data_shape
         self.mean_pixels = mean_pixels
