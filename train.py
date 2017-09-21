@@ -63,7 +63,7 @@ def parse_args():
                         help='blue mean value')
     parser.add_argument('--lr-steps', dest='lr_refactor_step', type=str, default='90, 180',
                         help='refactor learning rate at specified epochs')
-    parser.add_argument('--lr-factor', dest='lr_refactor_ratio', type=str, default=.1,
+    parser.add_argument('--lr-factor', dest='lr_refactor_ratio', type=float, default=.1,
                         help='ratio to refactor learning rate')
     parser.add_argument('--freeze', dest='freeze_pattern', type=str, default="",
                         help='freeze layer pattern')
