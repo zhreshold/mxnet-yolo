@@ -1,5 +1,6 @@
 import mxnet as mx
-import resnet
+import symbol.resnet
+from symbol.common import stack_neighbor
 
 def conv_act_layer(from_layer, name, num_filter, kernel=(3, 3), pad=(1, 1), \
     stride=(1,1), act_type="relu", use_batchnorm=True):
@@ -59,7 +60,8 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
         act_type='leaky')
 
     # re-organize
-    conv5_6 = mx.sym.stack_neighbor(data=conv1, kernel=(2, 2), name='stack_downsample')
+    # conv5_6 = mx.sym.stack_neighbor(data=conv1, kernel=(2, 2), name='stack_downsample')
+    conv5_6 = stack_neighbor(conv1, factor=2)
     concat = mx.sym.Concat(*[conv5_6, conv7_2], dim=1)
     # concat = conv7_2
     conv8_1 = conv_act_layer(concat, 'conv8_1', 1024, kernel=(3, 3), pad=(1, 1),

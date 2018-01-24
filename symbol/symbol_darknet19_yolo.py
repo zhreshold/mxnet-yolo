@@ -4,8 +4,8 @@ Redmon, Joseph, and Ali Farhadi. "YOLO9000: Better, Faster, Stronger."
 "https://arxiv.org/pdf/1612.08242.pdf"
 """
 import mxnet as mx
-from symbol_darknet19 import get_symbol as get_darknet19
-from symbol_darknet19 import conv_act_layer
+from symbol.symbol_darknet19 import get_symbol as get_darknet19
+from symbol.symbol_darknet19 import conv_act_layer
 
 def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     bone = get_darknet19(num_classes=num_classes, **kwargs)

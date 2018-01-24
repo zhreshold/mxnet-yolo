@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from imdb import Imdb
+from dataset.imdb import Imdb
 
 
 class YoloFormat(Imdb):
