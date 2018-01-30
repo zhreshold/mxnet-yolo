@@ -4,7 +4,7 @@ import sys
 import importlib
 import mxnet as mx
 from dataset.iterator import DetRecordIter
-from config.config import cfg
+from config.default_config import cfg
 from evaluate.eval_metric import MApMetric, VOC07MApMetric
 import logging
 
@@ -74,12 +74,12 @@ def evaluate_net(net, path_imgrec, num_classes, mean_pixels, data_shape,
         sys.path.append(os.path.join(cfg.ROOT_DIR, 'symbol'))
         net = importlib.import_module("symbol_" + net) \
             .get_symbol(num_classes, nms_thresh, force_nms)
-    if not 'label' in net.list_arguments():
-        label = mx.sym.Variable(name='label')
+    if not 'yolo_output_label' in net.list_arguments():
+        label = mx.sym.Variable(name='yolo_output_label')
         net = mx.sym.Group([net, label])
 
     # init module
-    mod = mx.mod.Module(net, label_names=('label',), logger=logger, context=ctx,
+    mod = mx.mod.Module(net, label_names=('yolo_output_label',), logger=logger, context=ctx,
         fixed_param_names=net.list_arguments())
     mod.bind(data_shapes=eval_iter.provide_data, label_shapes=eval_iter.provide_label)
     mod.set_params(args, auxs, allow_missing=False, force_init=True)
