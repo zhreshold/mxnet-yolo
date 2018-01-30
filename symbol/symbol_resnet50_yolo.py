@@ -1,5 +1,6 @@
 import mxnet as mx
-import resnet
+from symbol import resnet
+from symbol.common import stack_neighbor
 
 def conv_act_layer(from_layer, name, num_filter, kernel=(3, 3), pad=(1, 1), \
     stride=(1,1), act_type="relu", use_batchnorm=True):
@@ -59,7 +60,8 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
         act_type='leaky')
 
     # re-organize
-    conv5_6 = mx.sym.stack_neighbor(data=conv1, kernel=(2, 2), name='stack_downsample')
+    # conv5_6 = mx.sym.stack_neighbor(data=conv1, kernel=(2, 2), name='stack_downsample')
+    conv5_6 = stack_neighbor(conv1, factor=2)
     concat = mx.sym.Concat(*[conv5_6, conv7_2], dim=1)
     # concat = conv7_2
     conv8_1 = conv_act_layer(concat, 'conv8_1', 1024, kernel=(3, 3), pad=(1, 1),
@@ -67,7 +69,7 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     pred = mx.symbol.Convolution(data=conv8_1, name='conv_pred', kernel=(1, 1),
         num_filter=num_anchor * (num_classes + 4 + 1))
 
-    out = mx.contrib.symbol.YoloOutput(data=pred, num_class=num_classes,
+    out = mx.contrib.symbol.Yolo2Output(data=pred, num_class=num_classes,
         num_anchor=num_anchor, object_grad_scale=5.0, background_grad_scale=1.0,
         coord_grad_scale=1.0, class_grad_scale=1.0, anchors=anchors,
         nms_topk=400, warmup_samples=12800, name='yolo_output')

@@ -1,6 +1,6 @@
 # YOLO-v2: Real-Time Object Detection
 
-Still under development. 71 mAP on VOC2007 achieved so far.
+Still under development. 71 mAP(darknet) and 74mAP(resnet50) on VOC2007 achieved so far.
 
 This is a pre-released version.
 
@@ -21,7 +21,7 @@ custom operators are not presented in official MXNet. [Instructions](http://mxne
 - Download the pretrained [model](https://github.com/zhreshold/mxnet-yolo/releases/download/0.1-alpha/yolo2_darknet19_416_pascalvoc0712_trainval.zip), and extract to `model/` directory.
 - Run
 ```
-# cd /paht/to/mxnet-yolo
+# cd /path/to/mxnet-yolo
 python demo.py --cpu
 # available options
 python demo.py -h
@@ -29,6 +29,7 @@ python demo.py -h
 
 ### Train the model
 - Grab a pretrained model, e.g. [`darknet19`](https://github.com/zhreshold/mxnet-yolo/releases/download/0.1-alpha/darknet19_416_ILSVRC2012.zip)
+- (optional) Grab a pretrained resnet50 model, [`resnet-50-0000.params`](http://data.dmlc.ml/models/imagenet/resnet/50-layers/resnet-50-0000.params),[`resnet-50-symbol.json`](http://data.dmlc.ml/models/imagenet/resnet/50-layers/resnet-50-symbol.json), this will produce slightly better mAP than `darknet` in my experiments.
 - Download PASCAL VOC dataset.
 ```
 cd /path/to/where_you_store_datasets/
@@ -52,4 +53,8 @@ python tools/prepare_dataset.py --dataset pascal --year 2007 --set test --target
 - Start training
 ```
 python train.py --gpus 0,1,2,3 --epoch 0
+# choose different networks, such as resnet50_yolo
+python train.py --gpus 0,1,2,3 --network resnet50_yolo --data-shape 416 --pretrained model/resnet-50 --epoch 0
+# see advanced arguments for training
+python train.py -h
 ```
