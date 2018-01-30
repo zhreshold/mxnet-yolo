@@ -18,7 +18,7 @@ custom operators are not presented in official MXNet. [Instructions](http://mxne
 - Install required packages: `cv2`, `matplotlib`
 
 ### Try the demo
-- Download the pretrained [model](https://github.com/zhreshold/mxnet-yolo/releases/download/0.1-alpha/yolo2_darknet19_416_pascalvoc0712_trainval.zip), and extract to `model/` directory.
+- Download the pretrained [model](https://github.com/zhreshold/mxnet-yolo/releases/download/0.1-alpha/yolo2_darknet19_416_pascalvoc0712_trainval.zip)(darknet as backbone), or this [model](https://github.com/zhreshold/mxnet-yolo/releases/download/v0.2.0/yolo2_resnet50_voc0712_trainval.tar.gz)(resnet50 as backbone) and extract to `model/` directory.
 - Run
 ```
 # cd /path/to/mxnet-yolo
