@@ -5,7 +5,7 @@ Redmon, Joseph, and Ali Farhadi. "YOLO9000: Better, Faster, Stronger."
 """
 import mxnet as mx
 from symbol.symbol_darknet19 import get_symbol as get_darknet19
-from symbol.symbol_darknet19 import conv_act_layer
+from symbol.symbol_darknet19 import conv_act_layer, stack_neighbor
 
 def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     bone = get_darknet19(num_classes=num_classes, **kwargs)
@@ -30,12 +30,7 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
 
     # re-organze conv5_6 and concat conv7_2
     # conv5_7 = mx.sym.stack_neighbor(data=conv5_6, kernel=(2, 2), name='stack_downsample')
-    conv5_7 = mx.sym.reshape(conv5_6, shape=(0, 0, -4, -1, 2, -2))  # (b, c, h/2, 2, w)
-    conv5_7 = mx.sym.transpose(conv5_7, axes=(0, 1, 3, 2, 4))  # (b, c, 2, h/2, w)
-    conv5_7 = mx.sym.reshape(conv5_7, shape=(0, -3, -1, -2))  # (b, c * 2, h/2, w)
-    conv5_7 = mx.sym.reshape(conv5_7, shape=(0, 0, 0, -4, -1, 2))  # (b, c * 2, h/2, w/2, 2)
-    conv5_7 = mx.sym.transpose(conv5_7, axes=(0, 1, 4, 2, 3))  # (b, c*2, 2, h/2, w/2)
-    conv5_7 = mx.sym.reshape(conv5_7, shape=(0, -3, -1, -2))  # (b, c*4, h/2, w/2)
+    conv5_7 = stack_neighbor(conv5_6, factor=2)
     concat = mx.sym.Concat(*[conv5_7, conv7_2], dim=1)
     # concat = conv7_2
     conv8_1 = conv_act_layer(concat, 'conv8_1', 1024, kernel=(3, 3), pad=(1, 1),
@@ -43,7 +38,7 @@ def get_symbol(num_classes=20, nms_thresh=0.5, force_nms=False, **kwargs):
     pred = mx.symbol.Convolution(data=conv8_1, name='conv_pred', kernel=(1, 1),
         num_filter=num_anchor * (num_classes + 4 + 1))
 
-    out = mx.contrib.symbol.YoloOutput(data=pred, num_class=num_classes,
+    out = mx.contrib.symbol.Yolo2Output(data=pred, num_class=num_classes,
         num_anchor=num_anchor, object_grad_scale=5.0, background_grad_scale=1.0,
         coord_grad_scale=1.0, class_grad_scale=1.0, anchors=anchors,
         nms_topk=400, warmup_samples=12800, name='yolo_output')
