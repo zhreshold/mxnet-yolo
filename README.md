@@ -4,6 +4,16 @@ Still under development. 71 mAP(darknet) and 74mAP(resnet50) on VOC2007 achieved
 
 This is a pre-released version.
 
+### What's new
+This repo is now deprecated, I am migrating to the latest [Gluon-CV](https://github.com/dmlc/gluon-cv) which is more user friendly and has a lot more algorithms in development. 
+
+* Pretrained YOLOv3 models which achiveve 81%+ mAP on VOC and near 36% mAP on COCO: [Model Zoo](https://gluon-cv.mxnet.io/model_zoo/index.html#object-detection).
+
+* Object Detection model [tutorials](https://gluon-cv.mxnet.io/build/examples_detection/index.html).
+
+
+This repo will not receive active development, however, you can continue use it with the mxnet 1.1.0(probably 1.2.0).
+
 ### Disclaimer
 This is a re-implementation of original yolo v2 which is based on [darknet](https://github.com/pjreddie/darknet).
 The arXiv paper is available [here](https://arxiv.org/pdf/1612.08242.pdf).
