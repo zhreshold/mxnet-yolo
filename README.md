@@ -7,7 +7,7 @@ This is a pre-released version.
 ### What's new
 This repo is now deprecated, I am migrating to the latest [Gluon-CV](https://github.com/dmlc/gluon-cv) which is more user friendly and has a lot more algorithms in development. 
 
-* Pretrained YOLOv3 models which achiveve 81%+ mAP on VOC and near 36% mAP on COCO: [Model Zoo](https://gluon-cv.mxnet.io/model_zoo/index.html#object-detection).
+* Pretrained YOLOv3 models which achiveve 81%+ mAP on VOC and near 37% mAP on COCO: [Model Zoo](https://gluon-cv.mxnet.io/model_zoo/detection.html).
 
 * Object Detection model [tutorials](https://gluon-cv.mxnet.io/build/examples_detection/index.html).
 
